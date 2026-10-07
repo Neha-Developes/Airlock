@@ -1,4 +1,4 @@
-"""Quick smoke test: one tiny call to the NVIDIA endpoint."""
+"""Quick smoke test: one tiny call to the chosen LLM endpoint."""
 
 import sys
 

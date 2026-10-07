@@ -4,16 +4,36 @@
 
 // When index.html is opened directly from disk, relative /api URLs resolve to
 // the file system. Point those requests at the local Airlock server instead.
-const API_BASE = window.location.protocol === "file:" ? "http://127.0.0.1:8000" : "";
+// Replace this with your Render deployment URL when deploying to Vercel
+const RENDER_API = "https://YOUR-RENDER-URL.onrender.com";
+
+let API_BASE = "";
+if (window.location.protocol === "file:") {
+  API_BASE = "http://127.0.0.1:8000";
+} else if (window.location.hostname.endsWith("vercel.app")) {
+  API_BASE = RENDER_API;
+}
 
 async function apiFetch(path, options = {}) {
-  const response = await fetch(`${API_BASE}${path}`, options);
+  let response;
+  try {
+    response = await fetch(`${API_BASE}${path}`, options);
+  } catch (err) {
+    throw new Error(`Connection failed. Is the server running at ${API_BASE || "same origin"}?`);
+  }
+
   const body = await response.text();
   let data;
 
   try {
     data = body ? JSON.parse(body) : {};
   } catch {
+    if (response.status === 429) {
+       throw new Error("The model hit its rate limit. Wait a minute and retry.");
+    }
+    if (response.status === 503) {
+       throw new Error("The model endpoint is temporarily unavailable. Please retry.");
+    }
     throw new Error(
       `Backend returned HTTP ${response.status} instead of JSON. ` +
       `Start Airlock with: python -m airlock.server`

@@ -1,10 +1,31 @@
+# Environments
 .env
-.venv
-__pycache__
+.env.*
+!.env.example
+.venv/
+venv/
+ENV/
+
+# Python cache & artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+
+# Output and runtime logs
+outbox.jsonl
+auditlog.jsonl
+*.log
+
+# IDEs and OS files
 .idea/
 .vscode/
-auditlog.jsonl
-outbox.jsonl
-*.pyc
-test_nvidia.py
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
 
+# Test scripts & temp patch files
+test_*.py
+patch_*.py

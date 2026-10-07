@@ -2,7 +2,7 @@
 
 A small LLM-powered email assistant mimicking a real-world tool-calling loop, designed to demonstrate the effects of unmitigated prompt-injection vulnerabilities.
 
-In this "S1" baseline, the assistant connects directly to a highly capable AI model (NVIDIA NIM endpoints). It possesses tools to read emails, search emails, read local files, browse the web, and send emails out. There are no guardrails preventing the model from acting upon arbitrary instructions received in an email body.
+In this "S1" baseline, the assistant connects directly to a highly capable AI model (defaulting to Google AI Studio Gemini endpoints). It possesses tools to read emails, search emails, read local files, browse the web, and send emails out. There are no guardrails preventing the model from acting upon arbitrary instructions received in an email body.
 
 ## Setup
 
@@ -16,13 +16,16 @@ python -m pip install -r requirements.txt
 
 2. **Configure API Key:**
 Copy `.env.example` to `.env`. 
-Set your free NVIDIA API key and ensure `MODEL` points to an actively provided model, e.g., `nvidia/nemotron-3-super-120b-a12b` or `meta/llama-3.1-70b-instruct`.
+Set your Google AI Studio (Gemini) API key:
 
 ```ini
-NVIDIA_API_KEY=nvapi-...
-NVIDIA_BASE_URL=https://integrate.api.nvidia.com/v1
-MODEL=nvidia/nemotron-3-super-120b-a12b
+LLM_PROVIDER=gemini
+GEMINI_API_KEY=your-gemini-api-key-here
+GEMINI_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai/
+GEMINI_MODEL=gemini-3.8-flash
 ```
+
+*(Note: NVIDIA NIM is also supported by setting `LLM_PROVIDER=nvidia` and providing `NVIDIA_API_KEY`, `NVIDIA_BASE_URL`, and `NVIDIA_MODEL`.)*
 
 ## Running the Dashboard
 
@@ -41,7 +44,7 @@ If you prefer logging directly to the console:
 ```bash
 python -m airlock.demo_normal
 ```
-Summarizes 6 unread emails. State ends safely.
+Summarizes unread emails. State ends safely.
 
 **Attack (Poisoned Inbox):**
 ```bash

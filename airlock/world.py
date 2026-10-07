@@ -71,6 +71,10 @@ class FakeWorld:
                         "unread": bool(email.get("unread")),
                     }
                 )
+
+        # Email clients conventionally show the newest messages first. This also
+        # means the inbox view matches the order a user sees in the UI.
+        matches.sort(key=lambda email: str(email.get("received_at", "")), reverse=True)
         return matches
 
     @staticmethod

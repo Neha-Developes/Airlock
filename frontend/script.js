@@ -5,7 +5,7 @@
 // When index.html is opened directly from disk, relative /api URLs resolve to
 // the file system. Point those requests at the local Airlock server instead.
 // Replace this with your Render deployment URL when deploying to Vercel
-const RENDER_API = https://airlock-tpfz.onrender.com;
+const RENDER_API = "https://airlock-tpfz.onrender.com";
 
 let API_BASE = "";
 if (window.location.protocol === "file:") {
